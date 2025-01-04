@@ -79,3 +79,4 @@ This library is released under the MIT license. See [LICENSE](LICENSE) for detai
 
 - Create unit tests
 - Add documentation comments
+- Implement cancellation of observation tasks
