@@ -18,6 +18,16 @@ public final class ObservableUserDefaults {
     public func notifyChange(for key: String) {
         distributors[key]?.yield(())
     }
+
+    public func resetAll() {
+        let dictionary = userDefaults.dictionaryRepresentation()
+        for key in dictionary.keys {
+            userDefaults.removeObject(forKey: key)
+        }
+        for distributor in distributors.values {
+            distributor.yield(())
+        }
+    }
 }
 
 extension ObservableUserDefaults {

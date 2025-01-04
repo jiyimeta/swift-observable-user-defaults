@@ -39,6 +39,7 @@ public macro ObservableWithUserDefaults() = #externalMacro(
 )
 
 @attached(accessor)
+@attached(peer, names: arbitrary)
 public macro UserDefaultsEntry(_ key: String? = nil) = #externalMacro(
     module: "ObservableUserDefaultsMacrosPlugin",
     type: "UserDefaultsEntryMacro"

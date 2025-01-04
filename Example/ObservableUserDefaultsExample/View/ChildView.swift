@@ -15,6 +15,22 @@ final class ChildViewModel {
     // Dependency
     @ObservedUserDefaults
     var fooObservableUserDefaults: ObservableUserDefaults = .standard
+
+    func resetCount() {
+        fooObservableUserDefaults.resetCount()
+    }
+
+    func resetQuxCount() {
+        fooObservableUserDefaults.resetFooCount()
+    }
+
+    func resetLocalCount() {
+        localCount = 0
+    }
+
+    func resetIgnoredCount() {
+        ignoredCount = 0
+    }
 }
 
 struct ChildView: View {
@@ -25,10 +41,10 @@ struct ChildView: View {
             .font(.headline)
             .padding()
 
-        IncrementRow(label: "count", count: $viewModel.count)
-        IncrementRow(label: "qux", count: $viewModel.quxCount)
-        IncrementRow(label: "local", count: $viewModel.localCount)
-        IncrementRow(label: "ignored", count: $viewModel.ignoredCount)
+        IncrementRow(label: "count", count: $viewModel.count, reset: viewModel.resetCount)
+        IncrementRow(label: "qux", count: $viewModel.quxCount, reset: viewModel.resetQuxCount)
+        IncrementRow(label: "local", count: $viewModel.localCount, reset: viewModel.resetLocalCount)
+        IncrementRow(label: "ignored", count: $viewModel.ignoredCount, reset: viewModel.resetIgnoredCount)
 
         RandomStringRow(string: $viewModel.title)
     }

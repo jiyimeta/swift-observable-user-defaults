@@ -3,6 +3,7 @@ import SwiftUI
 struct IncrementRow: View {
     var label: String
     @Binding var count: Int
+    var reset: () -> Void
 
     var body: some View {
         HStack(spacing: 0) {
@@ -17,7 +18,7 @@ struct IncrementRow: View {
             .font(.headline)
             .frame(width: 20)
 
-            Color.clear
+            Button("Reset", action: reset)
                 .frame(width: 50, height: 0)
         }
     }

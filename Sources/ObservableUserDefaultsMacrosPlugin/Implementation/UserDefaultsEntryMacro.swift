@@ -4,7 +4,9 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
-public struct UserDefaultsEntryMacro: AccessorMacro {
+public struct UserDefaultsEntryMacro {}
+
+extension UserDefaultsEntryMacro: AccessorMacro {
     public static func expansion(
         of node: AttributeSyntax,
         providingAccessorsOf declaration: some DeclSyntaxProtocol,
@@ -53,8 +55,48 @@ public struct UserDefaultsEntryMacro: AccessorMacro {
     }
 }
 
+extension UserDefaultsEntryMacro: PeerMacro {
+    public static func expansion(
+        of node: AttributeSyntax,
+        providingPeersOf declaration: some DeclSyntaxProtocol,
+        in context: some MacroExpansionContext
+    ) throws -> [DeclSyntax] {
+        let variableDecl = try declaration.asVariable(at: node)
+
+        guard
+            let propertyName = variableDecl.bindings
+                .first?
+                .pattern
+                .as(IdentifierPatternSyntax.self)?
+                .identifier
+                .text
+        else {
+            throw DiagnosticsError("Unknown error occurred.", at: node)
+        }
+
+        let keyName = node.argumentList?
+            .first?
+            .expression
+            .as(StringLiteralExprSyntax.self)?
+            .segments
+            .toString()
+            ?? propertyName
+
+        return [
+            """
+            func reset\(raw: propertyName.capitalizingFirstLetter())() {
+                userDefaults.removeObject(forKey: "\(raw: keyName)")
+                notifyChange(for: "\(raw: propertyName)")
+            }
+            """,
+        ]
+    }
+}
+
+// MARK: - Private methods
+
 extension PatternBindingSyntax {
-    var defaultValue: String? {
+    fileprivate var defaultValue: String? {
         if let explicitDefaultValue = initializer?
             .value
             .toString()
