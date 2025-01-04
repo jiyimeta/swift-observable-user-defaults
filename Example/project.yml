@@ -1,0 +1,26 @@
+name: ObservableUserDefaultsExample
+
+options:
+  developmentLanguage: en
+  deploymentTarget:
+    iOS: 15.0
+
+packages:
+  ObservableUserDefaults:
+    path: ../
+
+targets:
+  ObservableUserDefaultsExample:
+    type: application
+    platform: iOS
+    settings:
+      INFOPLIST_FILE: Info.plist
+      TARGETED_DEVICE_FAMILY: 1
+      PRODUCT_BUNDLE_IDENTIFIER: com.dev.ObservableUserDefaultsExample
+      MARKETING_VERSION: 1.0
+      CURRENT_PROJECT_VERSION: 1
+    sources:
+      - ObservableUserDefaultsExample
+    dependencies:
+      - package: ObservableUserDefaults
+
