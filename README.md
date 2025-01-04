@@ -1,6 +1,6 @@
 # swift-observable-user-defaults
 
-This library enables us to observe user defaults easily.
+This library enables us to observe userDefaults easily.
 It can be managed in Package.swift or Xcode project.
 
 ## Usage
@@ -38,6 +38,24 @@ final class ContentViewModel {
     // Attach `@ObservedUserDefaults` to a variable with type `ObservableUserDefaults`.
     @ObservedUserDefaults
     var observableUserDefaults: ObservableUserDefaults = .standard
+}
+```
+
+If we want to observe a custom type with saving userDefaults, it is enough making the type conform to `UserDefaultsValueConvertible` protocol, like the following code:
+
+```swift
+extension CustomString: UserDefaultsValueConvertible {
+    init(userDefaultsValue: String) {
+        self = CustomString(userDefaultsValue)
+    }
+
+    var userDefaultsValue: String {
+        self.string
+    }
+}
+
+extension ObservableUserDefaults {
+    @UserDefaultsEntry var customString = CustomString("")
 }
 ```
 
