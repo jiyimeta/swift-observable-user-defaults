@@ -31,13 +31,23 @@ public struct UserDefaultsEntryMacro: AccessorMacro {
             .toString()
             ?? propertyName
 
+        let implicitNil =
+            if let type = variableDecl.bindings.first?.typeAnnotation?.type,
+            type.is(OptionalTypeSyntax.self)
+        {
+            "nil"
+        } else {
+            nil
+        }
+
         guard
-            let defaultValue = declaration
-                .as(VariableDeclSyntax.self)?
+            let defaultValue = variableDecl
                 .bindings
                 .first?
                 .initializer?
                 .value
+                .toString()
+                ?? implicitNil
         else {
             throw DiagnosticsError("Default value is needed.", at: node)
         }
@@ -50,7 +60,7 @@ public struct UserDefaultsEntryMacro: AccessorMacro {
             """,
             """
             set {
-                guard count != newValue else { return }
+                guard \(raw: propertyName) != newValue else { return }
 
                 userDefaults.set(typedValue: newValue, for: "\(raw: keyName)")
                 notifyChange(for: "\(raw: propertyName)")

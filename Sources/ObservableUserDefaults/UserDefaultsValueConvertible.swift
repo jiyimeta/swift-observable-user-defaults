@@ -15,6 +15,14 @@ extension UserDefaults {
     public func set(typedValue: some UserDefaultsValueConvertible, for key: String) {
         set(typedValue.userDefaultsValue, forKey: key)
     }
+
+    public func set(typedValue: (some UserDefaultsValueConvertible)?, for key: String) {
+        if let typedValue {
+            set(typedValue.userDefaultsValue, forKey: key)
+        } else {
+            removeObject(forKey: key)
+        }
+    }
 }
 
 // MARK: - Conformances of primitive types
