@@ -32,7 +32,7 @@ import ObservableUserDefaultsMacros
 @MainActor
 final class ContentViewModel {
     // Attach `@UserDefaultsTracked` to a variable to track with userDefaults.
-    @UserDefaultsTracked(\.count) var count = 0
+    @UserDefaultsTracked(\.count) var count: Int
     @UserDefaultsTracked(\.title) var title: String?
 
     // Attach `@ObservedUserDefaults` to a variable with type `ObservableUserDefaults`.

@@ -5,8 +5,8 @@ import SwiftUI
 @ObservableWithUserDefaults
 @MainActor
 final class ContentViewModel {
-    @UserDefaultsTracked(\.count) var count = 0
-    @UserDefaultsTracked(\.fooCount) var bazCount = 0
+    @UserDefaultsTracked(\.count) var count: Int
+    @UserDefaultsTracked(\.fooCount) var bazCount: Int
     var localCount = 0
     @ObservationIgnored var ignoredCount = 0
 

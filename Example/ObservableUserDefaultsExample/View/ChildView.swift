@@ -5,8 +5,8 @@ import SwiftUI
 @ObservableWithUserDefaults
 @MainActor
 final class ChildViewModel {
-    @UserDefaultsTracked(\.count) var count = 0
-    @UserDefaultsTracked(\.fooCount) var quxCount = 0
+    @UserDefaultsTracked(\.count) var count: Int
+    @UserDefaultsTracked(\.fooCount) var quxCount: Int
     var localCount = 0
     @ObservationIgnored var ignoredCount = 0
 
