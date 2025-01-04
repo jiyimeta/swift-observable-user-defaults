@@ -31,24 +31,7 @@ public struct UserDefaultsEntryMacro: AccessorMacro {
             .toString()
             ?? propertyName
 
-        let implicitNil =
-            if let type = variableDecl.bindings.first?.typeAnnotation?.type,
-            type.is(OptionalTypeSyntax.self)
-        {
-            "nil"
-        } else {
-            nil
-        }
-
-        guard
-            let defaultValue = variableDecl
-                .bindings
-                .first?
-                .initializer?
-                .value
-                .toString()
-                ?? implicitNil
-        else {
+        guard let defaultValue = variableDecl.bindings.first?.defaultValue else {
             throw DiagnosticsError("Default value is needed.", at: node)
         }
 
@@ -67,5 +50,24 @@ public struct UserDefaultsEntryMacro: AccessorMacro {
             }
             """,
         ]
+    }
+}
+
+extension PatternBindingSyntax {
+    var defaultValue: String? {
+        if let explicitDefaultValue = initializer?
+            .value
+            .toString()
+        {
+            return explicitDefaultValue
+        }
+
+        if let type = typeAnnotation?.type,
+           type.is(OptionalTypeSyntax.self)
+        {
+            return "nil"
+        }
+
+        return nil
     }
 }
